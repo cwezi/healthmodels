@@ -7,8 +7,42 @@ from rapidsms.models import Contact
 from rapidsms.contrib.locations.models import Location
 
 class HealthId(models.Model):
+
+    class Meta:
+        verbose_name = u"Health ID"
+        verbose_name_plural = u"Health IDs"
+
+    STATUS_GENERATED = 'G'
+    STATUS_PRINTED = 'P'
+    STATUS_ISSUED = 'I'
+    STATUS_REVOKED = 'R'
+
+    STATUS_CHOICES = (
+        (STATUS_GENERATED, u"Generated"),
+        (STATUS_PRINTED, u"Printed"),
+        (STATUS_ISSUED, u"Issued"),
+        (STATUS_REVOKED, u"Revoked"))
+
+    health_id = models.CharField(u"Health ID", max_length=10, unique=True)
+    generated_on = models.DateTimeField(u"Generated on", auto_now_add=True)
+    printed_on = models.DateTimeField(u"Printed on", blank=True, null=True)
+    issued_on = models.DateTimeField(u"Issued on", blank=True, null=True)
+    revoked_on = models.DateTimeField(u"Revoked on", blank=True, null=True)
+    issued_to = models.ForeignKey('Patient', verbose_name=u"Issued to", \
+                                  blank=True, null=True)
+    status = models.CharField(u"Status", choices=STATUS_CHOICES, \
+                              max_length=1, default=STATUS_GENERATED)
     
-    pass
+    # This field is here optimistically.  Ideally, one day, all mHealth
+    # projects will do a monolithic migration to a universal MIS with
+    # universal health ids.  This would serve as a placeholder to make
+    # the migration easy at an API level: each internal app could use
+    # its own health_id internally within it's existing models,
+    # while exposing the public migration_id to the outside world.
+    migration_id = models.BigIntegerField(digits=10,unique=True,null=True)
+
+    def __unicode__(self):
+        return u"%s" % self.health_id
 
 class HealthFacilityType(models.Model):
     name = models.CharField(max_length=50)
@@ -32,9 +66,6 @@ class HealthProviderBase(Contact):
     location = models.ForeignKey(Location, null=True)
     
 class PatientBase(models.Model):
-    """
-    I write awesome documentation
-    """
     health_id = models.ForeignKey(HealthId, unique=True, primary_key=True)
     name = models.CharField(max_length=128)
     gender = models.CharField(max_length=1, choices=(('M', 'Male'),('F', 'Female')), null=True)
@@ -43,9 +74,9 @@ class PatientBase(models.Model):
     deathdate = models.DateField(null=True)
     created = models.DateTimeField(auto_add_now=True)
     updated = models.DateTimeField(auto_now=True)
-    health_worker = models.ForeignKey(HealthProvider, null=True)
+    health_worker = models.ForeignKey('HealthProvider', null=True)
     location = models.ForeignKey(Location, null=True)
-    health_facility = models.ForeignKey(HealthFacility, null=True)
+    health_facility = models.ForeignKey('HealthFacility', null=True)
     contact = models.ForeignKey(Contact, null=True)
     status  = models.CharField(max_length=1, choices=(('A', 'Active'),('I', 'Inactive')))
 
