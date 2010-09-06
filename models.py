@@ -1,13 +1,23 @@
+from django.conf import settings
 from django.db import models
-
+from rapidsms.contrib.locations.models import Location
+from rapidsms.models import Contact, ExtensibleModelBase
 from treebeard.mp_tree import MP_Node
 
-from rapidsms.models import ExtensibleModelBase
-from rapidsms.models import Contact
-from rapidsms.contrib.locations.models import Location
-
-class HealthId(models.Model):
-
+class HealthIdBase(models.Model):
+    """
+    Health Id is a unique identifier for a patient, but can also correspond
+    to a physical ID in places where these exist (hence the separate class).
+    This class is designed to err on the side of *too much* information, as 
+    for simpler MIS systems this class may be completely unused.
+    
+    An important field to note is migration_id.  This field is here optimistically.  Ideally, one day, all mHealth
+    projects will do a monolithic migration to a universal MIS with
+    universal health ids.  This would serve as a placeholder to make
+    the migration easy at an API level: each internal app could use
+    its own health_id internally within it's existing models,
+    while exposing the public migration_id to the outside world. 
+    """
     class Meta:
         verbose_name = u"Health ID"
         verbose_name_plural = u"Health IDs"
@@ -33,18 +43,20 @@ class HealthId(models.Model):
     status = models.CharField(u"Status", choices=STATUS_CHOICES, \
                               max_length=1, default=STATUS_GENERATED)
     
-    # This field is here optimistically.  Ideally, one day, all mHealth
-    # projects will do a monolithic migration to a universal MIS with
-    # universal health ids.  This would serve as a placeholder to make
-    # the migration easy at an API level: each internal app could use
-    # its own health_id internally within it's existing models,
-    # while exposing the public migration_id to the outside world.
-    migration_id = models.BigIntegerField(digits=10,unique=True,null=True)
+    migration_id = models.BigIntegerField(unique=True,null=True)
 
     def __unicode__(self):
         return u"%s" % self.health_id
 
 class HealthFacilityType(models.Model):
+    """
+    Examples of Health facility types could be 'local clinic', 
+    'hospital', etc.  
+    
+    FIXME: this may extend from LocationTypes, or go away completely,
+    depending on pending discussions around the current Locations
+    model.
+    """
     name = models.CharField(max_length=50)
     slug = models.SlugField(unique=True, primary_key=True)
 
@@ -66,7 +78,7 @@ class HealthProviderBase(Contact):
     location = models.ForeignKey(Location, null=True)
     
 class PatientBase(models.Model):
-    health_id = models.ForeignKey(HealthId, unique=True, primary_key=True)
+    health_id = models.ForeignKey('HealthId', unique=True, primary_key=True)
     name = models.CharField(max_length=128)
     gender = models.CharField(max_length=1, choices=(('M', 'Male'),('F', 'Female')), null=True)
     birthdate = models.DateField(null=True)
@@ -82,15 +94,24 @@ class PatientBase(models.Model):
 
     @property
     def first_name(self):
-        pass
+        names = self.name.split(' ')
+        if settings.SURNAME_FIRST and len(names) > 1:
+            return names[1]
+        else:
+            return names[0]
     
     @property
     def last_name(self):
-        pass
+        names = self.name.split(' ')
+        if not settings.SURNAME_FIRST and len(names) > 1:
+            return names[len(names) - 1]
+        else:
+            return names[0]
     
     @property
     def age(self):
-        pass
+        end_date = self.deathdate if self.deathdate else self.datetime.now()
+        return end_date - self.birthdate
     
     @property
     def is_dead(self):
@@ -106,4 +127,7 @@ class HealthFacility(HealthFacilityBase):
     __metaclass__ = ExtensibleModelBase
     
 class HealthProvider(HealthProviderBase):
-    __metaclass__ = ExtensibleModelBase    
+    __metaclass__ = ExtensibleModelBase
+    
+class HealthId(HealthIdBase):
+    __metaclass__ = ExtensibleModelBase         
