@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-from rapidsms.contrib.locations.models import Location
+from rapidsms.contrib.locations.models import Location, LocationType
 from rapidsms.models import Contact, ExtensibleModelBase
 from treebeard.mp_tree import MP_Node
 
@@ -48,20 +48,8 @@ class HealthIdBase(models.Model):
     def __unicode__(self):
         return u"%s" % self.health_id
 
-class HealthFacilityType(models.Model):
-    """
-    Examples of Health facility types could be 'local clinic', 
-    'hospital', etc.  
-    
-    FIXME: this may extend from LocationTypes, or go away completely,
-    depending on pending discussions around the current Locations
-    model.
-    """
-    name = models.CharField(max_length=50)
-    slug = models.SlugField(unique=True, primary_key=True)
-
 class HealthFacilityBase(MP_Node):
-    type = models.ForeignKey(HealthFacilityType)
+    type = models.ForeignKey(LocationType)
     # Catchment area should be a location that makes sense independently, i.e.
     # a city, town, village, parish, region, district, etc.
     catchment_area = models.ForeignKey(Location, null=True)
