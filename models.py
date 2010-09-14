@@ -3,6 +3,7 @@ from django.db import models
 from rapidsms.contrib.locations.models import Location, LocationType
 from rapidsms.models import Contact, ExtensibleModelBase
 from treebeard.mp_tree import MP_Node
+from eav.utils import EavRegistry
 
 class HealthIdBase(models.Model):
     """
@@ -105,17 +106,31 @@ class PatientBase(models.Model):
     def is_dead(self):
         return bool(self.deathdate)
 
-    class Meta:
-        abstract = True
-
 class Patient(PatientBase):
     __metaclass__ = ExtensibleModelBase
     
 class HealthFacility(HealthFacilityBase):
     __metaclass__ = ExtensibleModelBase
     
+class PatientEncounterBase(models.Model):
+    patient = models.ForeignKey(Patient)
+
+class FacilityReportBase(models.Model):
+    facility = models.ForeignKey(HealthFacility)
+
 class HealthProvider(HealthProviderBase):
     __metaclass__ = ExtensibleModelBase
     
 class HealthId(HealthIdBase):
-    __metaclass__ = ExtensibleModelBase         
+    __metaclass__ = ExtensibleModelBase
+
+class PatientEncounter(PatientEncounterBase):
+    __metaclass__ = ExtensibleModelBase
+
+EavRegistry.register(PatientEncounter)
+
+class FacilityReport(FacilityReportBase):
+    __metaclass__ = ExtensibleModelBase
+
+EavRegistry.register(FacilityReport)
+
