@@ -3,7 +3,6 @@ from django.db import models
 from rapidsms.contrib.locations.models import Location, LocationType
 from rapidsms.models import Contact, ExtensibleModelBase
 from treebeard.mp_tree import MP_Node
-from eav.utils import EavRegistry
 
 class HealthIdBase(models.Model):
     """
@@ -127,10 +126,6 @@ class HealthId(HealthIdBase):
 class PatientEncounter(PatientEncounterBase):
     __metaclass__ = ExtensibleModelBase
 
-EavRegistry.register(PatientEncounter)
-
 class FacilityReport(FacilityReportBase):
     __metaclass__ = ExtensibleModelBase
-
-EavRegistry.register(FacilityReport)
 
