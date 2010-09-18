@@ -10,7 +10,6 @@ from HealthFacility import HealthFacility
 
 class FacilityReportBase(models.Model):
 
-
     class Meta:
         app_label = 'healthmodels'
 
@@ -20,6 +19,7 @@ class FacilityReportBase(models.Model):
 class FacilityReport(FacilityReportBase):
     __metaclass__ = ExtensibleModelBase
 
-
     class Meta:
         app_label = 'healthmodels'
+        verbose_name = _("Facility Report")
+        verbose_name_plural = _("Facility Reports")

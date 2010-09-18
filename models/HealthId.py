@@ -24,7 +24,6 @@ class HealthIdBase(models.Model):
     while exposing the public migration_id to the outside world.
     """
 
-
     class Meta:
         app_label = 'healthmodels'
         verbose_name = _(u"Health ID")
@@ -60,6 +59,7 @@ class HealthIdBase(models.Model):
 class HealthId(HealthIdBase):
     __metaclass__ = ExtensibleModelBase
 
-
     class Meta:
         app_label = 'healthmodels'
+        verbose_name = _("Health ID")
+        verbose_name_plural = _("Health IDs")

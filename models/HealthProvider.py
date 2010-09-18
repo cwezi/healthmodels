@@ -10,7 +10,6 @@ from rapidsms.contrib.locations.models import Location
 
 class HealthProviderBase(Contact):
 
-
     class Meta:
         app_label = 'healthmodels'
 
@@ -21,6 +20,7 @@ class HealthProviderBase(Contact):
 class HealthProvider(HealthProviderBase):
     __metaclass__ = ExtensibleModelBase
 
-
     class Meta:
         app_label = 'healthmodels'
+        verbose_name = _("Health Provider")
+        verbose_name_plural = _("Health Providers")

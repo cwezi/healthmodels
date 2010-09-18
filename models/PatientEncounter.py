@@ -10,7 +10,6 @@ from Patient import Patient
 
 class PatientEncounterBase(models.Model):
 
-
     class Meta:
         app_label = 'healthmodels'
 
@@ -20,6 +19,7 @@ class PatientEncounterBase(models.Model):
 class PatientEncounter(PatientEncounterBase):
     __metaclass__ = ExtensibleModelBase
 
-
     class Meta:
         app_label = 'healthmodels'
+        verbose_name = _("Patient Encounter")
+        verbose_name_plural = _("Patient Encounters")
