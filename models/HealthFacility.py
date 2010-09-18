@@ -6,7 +6,9 @@ from random import choice
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from rapidsms.models import Contact, ExtensibleModelBase
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
+from rapidsms.models import ExtensibleModelBase
 from simple_locations.models import Area, Point
 
 
@@ -48,6 +50,10 @@ class HealthFacilityBase(models.Model):
     # or village.  Depending on pending changes to the locations model,
     # this could eventually be a ForeignKey to the Point class instead.
     location = models.ForeignKey(Point, null=True, blank=True)
+    # report_to generic relation.
+    report_to_type = models.ForeignKey(ContentType, null=True, blank=True)
+    report_to_id = models.PositiveIntegerField(null=True, blank=True)
+    report_to = generic.GenericForeignKey('report_to_type', 'report_to_id')
 
     def __unicode__(self):
         return self.name
