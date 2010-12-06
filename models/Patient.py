@@ -33,16 +33,16 @@ class PatientBase(models.Model):
     last_name = models.CharField(_(u"Last name"), max_length=100, \
                                  help_text=_(u"Family name or surname"))
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    birthdate = models.DateField(blank=True)
+    birthdate = models.DateField(blank=True, null=True)
     estimated_birthdate = models.BooleanField(default=False)
-    deathdate = models.DateField(blank=True)
+    deathdate = models.DateField(blank=True,null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     health_worker = models.ForeignKey('HealthProvider', blank=True, \
                                       related_name='patients')
-    location = models.ForeignKey(Location, blank=True)
-    health_facility = models.ForeignKey('HealthFacility', blank=True)
-    contact = models.ForeignKey(Contact, blank=True)
+    location = models.ForeignKey(Location, blank=True, null=True)
+    health_facility = models.ForeignKey('HealthFacility', blank=True, null=True)
+    contact = models.ForeignKey(Contact, blank=True, null=True)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, \
                               default=ACTIVE)
 
