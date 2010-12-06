@@ -39,7 +39,7 @@ class PatientBase(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     health_worker = models.ForeignKey('HealthProvider', blank=True, \
-                                      related_name='patients')
+                                      related_name='patients', null=True)
     location = models.ForeignKey(Location, blank=True, null=True)
     health_facility = models.ForeignKey('HealthFacility', blank=True, null=True)
     contact = models.ForeignKey(Contact, blank=True, null=True)
