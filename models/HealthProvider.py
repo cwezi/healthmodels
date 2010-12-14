@@ -5,8 +5,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from rapidsms.models import Contact, ExtensibleModelBase
-from rapidsms.contrib.locations.models import Location
-
+from simple_locations.models import Area
 
 class HealthProviderBase(Contact):
 
@@ -14,7 +13,7 @@ class HealthProviderBase(Contact):
         app_label = 'healthmodels'
 
     facility = models.ForeignKey('HealthFacility', null=True)
-    location = models.ForeignKey(Location, null=True)
+    location = models.ForeignKey(Area, null=True)
 
 
 class HealthProvider(HealthProviderBase):
