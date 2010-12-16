@@ -1,0 +1,126 @@
+<form method="post" class="form" action="/healthfacility/{{pk}}/update/">
+
+  <table width="30%" class="form_table" style="float:left;">
+      <tr>
+
+                <td>Name:</td>
+                <td>{{ facility_form.name }}{{ form.pk }}</td>
+                  {% if facility_form.name.errors %}
+          <td>{{ facility_form.name.errors }}</td>
+                    {% endif %}
+            </tr>
+            <tr>
+                <td>Code:</td>
+                <td>{{ facility_form.code }}</td>
+                  {% if facility_form.code.errors %}
+          <td>{{ facility_form.code.errors }}</td>
+                    {% endif %}
+            </tr>
+            <tr>
+                <td>Type:</td>
+                <td >{{ facility_form.type }}</td>
+                {% if facility_form.type.errors %}
+          <td>{{ facility_form.type.errors }}</td>
+                    {% endif %}
+
+            </tr>
+       <tr>
+                <td>Report To:</td>
+                <td >{{ report_to_form.report_to }}</td>
+           {% if report_to_form.report_to.errors %}
+          <td>{{ report_to_form.report_to.errors }}</td>
+                    {% endif %}
+
+            </tr>
+
+     <tr>
+         <td>
+            Lat:
+         </td>
+         <td>
+             {{point_form.latitude}}
+         </td>
+          {% if point_form.latitude.errors %}
+          <td>{{ point_form.latitude.errors }}</td>
+                    {% endif %}
+
+     </tr>
+      <tr>
+          <td>
+             Lon:
+          </td>
+          <td>
+              {{point_form.longitude}}
+          </td>
+          {% if point_form.longitude.errors %}
+          <td>{{ point_form.longitude.errors }}</td>
+                    {% endif %}
+      </tr>
+       <script language="javascript">
+                     function show_on_map(){
+                    var lat = parseFloat($('#id_latitude')[0].value).toFixed(7);
+                    var lon = parseFloat($('#id_longitude')[0].value).toFixed(7);
+                    if ((lat <= 90 && lat >= -90) && (lon <= 180 && lon >= -180 )) {
+                        var point = new GLatLng(lat, lon);
+                        map.setCenter(point, 4);
+                        map_marker.setLatLng(point);
+                    }
+
+                     }
+                     show_on_map();
+                    $('#id_latitude,#id_longitude').change(
+                            function() {
+                                show_on_map();
+                            }
+                            );
+
+                </script>
+  </table>
+
+   <table width="25%"  style="float:left;height:100%;">
+       <tr>
+            <td colspan="2">
+              Catchment Areas
+            </td>
+       </tr>
+       <tr>
+           <td colspan="2">{{facility_form.catchment_areas}}</td>
+           {% if facility_form.catchment_areas.errors %}
+          <td>{{ facility_form.catchment_areas.errors }}</td>
+                    {% endif %}
+       </tr>
+
+   </table>
+
+    <table width="25%" class="form_table" style="float:left;">
+        <tr>
+            <td colspan="2">
+                Health Providers
+            </td>
+            
+        </tr>
+        <tr>
+            <td colspan="2">
+                {{health_provider_form.providers}}
+            </td>
+            {% if health_provider_form.providers.errors %}
+          <td>{{ health_provider_form.providers.errors }}</td>
+                    {% endif %}
+        </tr>
+        
+    </table>
+  <div class="buttons" style="float:left">
+
+                        <a href="javascript:void(0)" onclick="update_facility(this);" id="save_{{ pk }}"
+                           class="positive">
+                            <img border="0" src="{{ MEDIA_URL }}rapidsms_xforms/icons/silk/bullet_disk.png" alt=""/>Update
+                        </a>
+                        <a href="javascript:void(0)" onclick="load_add_facility(1);" class="negative">
+                            <img src="{{ MEDIA_URL }}rapidsms/icons/silk/decline.png" alt="" border="0"/>Cancel
+                        </a>
+                       
+                    </div>
+
+
+
+    </form>

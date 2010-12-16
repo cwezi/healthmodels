@@ -76,3 +76,27 @@ class HealthFacility(HealthFacilityBase):
         app_label = 'healthmodels'
         verbose_name = _("Health Facility")
         verbose_name_plural = _("Health Facilities")
+    def is_root(self):
+        if self.report_to==None:
+            return True
+        else:
+            return False
+    def get_children(self):
+
+            children=HealthFacility.objects.filter(report_to_id=self.pk)
+            if len(children)>0:
+                return children
+            else:
+                return False
+    def is_child_node(self):
+        children=HealthFacility.objects.filter(report_to_id=self.pk)
+        if len(children>0):
+            return False
+        else:
+            return True
+    
+            
+
+
+       
+    

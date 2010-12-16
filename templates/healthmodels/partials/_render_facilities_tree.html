@@ -1,0 +1,52 @@
+ {%load health_facility_tree%}
+<script language="javascript">
+    function expand_collapse(id) {
+        img_tag = $('#expand_' + id);
+        if (img_tag.attr('src') == '/static/simple_locations/images/plus.gif') {
+            img_tag.parent().next().show();
+            img_tag.attr('src', '/static/simple_locations/images/minus.gif');
+        }
+        else if (img_tag.attr('src') == '/static/simple_locations/images/minus.gif') {
+            img_tag.parent().next().hide();
+            img_tag.attr('src', '/static/simple_locations/images/plus.gif');
+        }
+    }
+</script>
+<ul class="root" id="tree">
+    {% facilitytree healthfacilities %}
+    <li>
+      <span id="span_{{ node.id }}">
+          <img id="expand_{{ node.id }}" src="/static/simple_locations/images/plus.gif"
+               onclick="expand_collapse({{ node.pk }})" class="add_delete"/>
+          <a id="anchor_{{ node.id }}"
+             style="padding-left:5px;" onClick="load_edit_facility({{ node.id }})" href='javascript:void(0)'>
+              {{ node.name }}  {{node.type}}
+          </a>
+          <img style="display:none;cursor:pointer;" border='0'
+               onclick="delete_facility({{ node.pk }})" src='/static/simple_locations/images/delete.png'
+               class="delete"/>
+
+        <script type="text/javascript">
+            $('#span_{{ node.pk }}').hover(
+                    function() {
+                        $(this).find('img[class=delete]').show();
+                    },
+                    function() {
+                        $(this).find('img[class=delete]').hide();
+                    }
+                    );
+        </script>
+       </span>
+        <ul class="children" style="display:none;">
+            {{ children }}
+            <li>
+                <a style="font-size:10px;padding-left:5px;"
+                   href="javascript:load_new_facility({{ node.pk }})" id="add_{{ node.pk}}">
+                    Add New
+                </a>
+            </li>
+
+        </ul>
+    </li>
+    {% endfacilitytree %}
+</ul>

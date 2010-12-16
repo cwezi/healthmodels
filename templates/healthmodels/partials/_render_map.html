@@ -1,0 +1,31 @@
+<br clear="both"/>
+<a onclick="javascript:drop_marker()">Center marker</a>
+<div id="map" style="width: 100%; height: 300px; margin-top:10px"></div>
+<script type="text/javascript">
+  var map_marker;
+  $(document).ready(
+    function () {
+      if (GBrowserIsCompatible()) {
+        map = new GMap2(document.getElementById("map"));
+        map.setCenter(new GLatLng(0.0, 0.0), 4);
+        map_marker = new GMarker(new GLatLng(0.0,0.0), {'draggable': true});
+        map.addOverlay(map_marker);
+        map.addControl(new GLargeMapControl());
+        GEvent.addListener(map_marker, "dragend",
+          function() {
+            var point = map_marker.getLatLng();
+            $('#id_latitude')[0].value=point.lat().toFixed(7);
+            $('#id_longitude')[0].value=point.lng().toFixed(7);
+          }
+        );
+      }
+    }
+  );
+
+  $(document).unload(function () {GUnload()});
+
+  function drop_marker() {
+    var point = map.getCenter();
+    map_marker.setLatLng(point);
+  }
+</script>
