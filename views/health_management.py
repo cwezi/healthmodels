@@ -80,12 +80,9 @@ def destroy_facility(request,pk):
     
 
 def create_facility(request):
-    facility=HealthFacility()
-    provider=HealthProvider()
-    point=Point
     health_provider_form=HealthProviderForm(request.POST)
     report_to_form=ReportToForm(request.POST)
-    facility_form=HealthFacilityForm(request.POST,instance=facility)
+    facility_form=HealthFacilityForm(request.POST)
     point_form=PointForm(request.POST)
     if facility_form.is_valid() and point_form.is_valid() and report_to_form.is_valid() and health_provider_form.is_valid():
             facility=facility_form.save(commit=False)
@@ -93,6 +90,7 @@ def create_facility(request):
             facility.location=location
             report_to=get_object_or_404(HealthFacility,pk=report_to_form.cleaned_data['report_to'])
             facility.report_to=report_to
+            facility.save()
             catchment_areas=facility_form.cleaned_data['catchment_areas']
             facility.catchment_areas=catchment_areas
             facility.save()
