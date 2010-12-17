@@ -10,9 +10,10 @@ class HealthFacilityForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(HealthFacilityForm, self).__init__(*args, **kwargs)
         instance = kwargs.get('instance',None)
+        self.fields['catchment_areas'].widget.attrs ={'class':'narrow'}
         if instance:
             self.fields['catchment_areas'].initial =[c.pk for c in instance.catchment_areas.all()]
-            self.fields['catchment_areas'].widget.attrs ={'class':'narrow','size':1}
+
 
 
     class Meta:
