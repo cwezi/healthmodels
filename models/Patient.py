@@ -6,7 +6,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from rapidsms.models import Contact, ExtensibleModelBase
 from rapidsms.contrib.locations.models import Location
-
+import datetime
 
 class PatientBase(models.Model):
 
@@ -48,7 +48,7 @@ class PatientBase(models.Model):
 
     @property
     def age(self):
-        end_date = self.deathdate if self.deathdate else self.datetime.now()
+        end_date = self.deathdate if self.deathdate else datetime.date.today()
         return end_date - self.birthdate
 
     @property
