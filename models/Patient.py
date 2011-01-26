@@ -48,8 +48,11 @@ class PatientBase(models.Model):
 
     @property
     def age(self):
-        end_date = self.deathdate if self.deathdate else datetime.date.today()
-        return end_date - self.birthdate
+        start_date = self.birthdate if type(self.birthdate) == datetime.date else self.birthdate.date()
+        end_date = datetime.date.today()
+        if self.deathdate is not None:
+            end_date = self.deathdate if type(self.deathdate) == datetime.date else self.deathdate.date()
+        return end_date - start_date
 
     @property
     def is_dead(self):
@@ -57,7 +60,7 @@ class PatientBase(models.Model):
 
     def full_name(self):
         # very weak for now
-        return ugettext(u"%(first)s %(last)s") % {'first': self.first_name, \
+        return _(u"%(first)s %(last)s") % {'first': self.first_name, \
                                            'last': self.last_name}
 
     def __unicode__(self):
