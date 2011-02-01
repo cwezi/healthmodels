@@ -11,10 +11,13 @@ from healthmodels.views.forms import *
 from django.forms.formsets import formset_factory
 from django.forms.models import modelformset_factory
 from django.utils.datastructures import MultiValueDictKeyError
+from django.conf import settings
 
 def facility_index(request,template_name="healthmodels/facility_index.html"):
     healthfacilities=HealthFacility.objects.all()
-    return render_to_response(template_name,{'healthfacilities':healthfacilities}, context_instance=RequestContext(request))
+    return render_to_response(template_name,
+        {'healthfacilities':healthfacilities,
+         'map_key':settings.MAP_KEY,}, context_instance=RequestContext(request))
     
 def new_facility(request,parent,template_name="healthmodels/new_facility.html"):
     facility_form=HealthFacilityForm()
