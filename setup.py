@@ -5,7 +5,7 @@ setup(
     version='0.1',
     license="BSD",
 
-    requires = ["rapidsms"],
+    install_requires = ["rapidsms"],
 
     description='A common set of models for mHealth-related applications.',
     long_description=open('README.rst').read(),
