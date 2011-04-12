@@ -5,7 +5,7 @@ setup(
     version='0.1',
     license="BSD",
 
-    install_requires = ["rapidsms",'simple_locations'],
+    install_requires = ["rapidsms"],
 
     dependency_links = [
         "http://github.com/mossplix/simple_locations/tarball/master#egg=simple_locations"
@@ -17,7 +17,7 @@ setup(
     author_email='david.a.mccann@gmail.com',
 
     url='http://github.com/daveycrockett/healthmodels',
-    download_url='http://github.com/daveycrockett/healthmodels/downloads',
+    #download_url='http://github.com/daveycrockett/healthmodels/downloads',
 
     include_package_data=True,
 
