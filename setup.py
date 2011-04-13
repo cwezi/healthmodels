@@ -5,7 +5,7 @@ setup(
     version='0.1',
     license="BSD",
 
-    install_requires = ["rapidsms"],
+    install_requires = ["rapidsms","simple_locations"],
 
     dependency_links = [
         "http://github.com/mossplix/simple_locations/tarball/master#egg=simple_locations"
