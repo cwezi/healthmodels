@@ -17,7 +17,7 @@ setup(
     author_email='david.a.mccann@gmail.com',
 
     url='http://github.com/daveycrockett/healthmodels',
-    #download_url='http://github.com/daveycrockett/healthmodels/downloads',
+    download_url='http://github.com/daveycrockett/healthmodels/downloads',
 
     include_package_data=True,
 
