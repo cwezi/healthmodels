@@ -22,7 +22,7 @@ setup(
     include_package_data=True,
 
     packages=['healthmodels'],
-    package_data={'healthmodels':['templates/*/*.html','templates/*/*/*.html']},
+    package_data={'healthmodels':['templates/*/*.html','templates/*/*/*.html','static/*','static/*/*']},
     zip_safe=False,
     classifiers=[
         'Development Status :: 4 - Beta',
