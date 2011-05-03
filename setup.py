@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='healthmodels',
@@ -21,7 +21,7 @@ setup(
 
     include_package_data=True,
 
-    packages=['healthmodels'],
+    packages=find_packages(),
     package_data={'healthmodels':['templates/*/*.html','templates/*/*/*.html','static/*/*']},
     zip_safe=False,
     classifiers=[
